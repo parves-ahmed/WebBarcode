@@ -51,6 +51,9 @@
     <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.2\lib\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.2.2.7\lib\net40\Mono.Security.dll</HintPath>
@@ -109,6 +112,7 @@
     <Content Include="UploadScanBarcode.aspx" />
     <Content Include="Web.config" />
     <Content Include="report.aspx" />
+    <Content Include="DetailsOfPerson.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BarCodeGenerator.aspx.cs">
@@ -148,6 +152,13 @@
       <DependentUpon>report.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserDetails.cs" />
+    <Compile Include="DetailsOfPerson.aspx.cs">
+      <DependentUpon>DetailsOfPerson.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetailsOfPerson.aspx.designer.cs">
+      <DependentUpon>DetailsOfPerson.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UploadFiles\" />

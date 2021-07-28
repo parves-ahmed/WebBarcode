@@ -17,6 +17,7 @@ using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using BorderStyle = NPOI.SS.UserModel.BorderStyle;
+using iTextSharp.tool.xml;
 
 namespace WebBarcode
 {
@@ -30,20 +31,33 @@ namespace WebBarcode
             }
         }
 
+        protected void ExportToPDF(object sender, EventArgs e)
+        {
+            StringReader sr = new StringReader(Request.Form[hfGridHtml.UniqueID]);
+            Document pdfDoc = new Document(PageSize.A4, 20f, 10f, 10f, 0f);
+            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+            pdfDoc.Close();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=HTML.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Write(pdfDoc);
+            Response.End();
+        }
+
         private void BindGridView()
         {
-            //string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-            //using (SqlConnection con = new SqlConnection(CS))
-            //{
-            //    SqlCommand cmd = new SqlCommand("spGetAllEmployeeList", con);
-            //    cmd.CommandType = CommandType.StoredProcedure;
-            //    con.Open();
-            //    EmployeeGridViewList.DataSource = cmd.ExecuteReader();
-            //    EmployeeGridViewList.DataBind();
-            //}
+            List<UserDetails> persons = new List<UserDetails>()
+             {
+                 new UserDetails() {ID="1001", Name="ABCD", City ="City1", Country="Bangladesh"},
+                 new UserDetails() {ID="1002", Name="PQRS", City ="City2", Country="Bangladesh"},
+                 new UserDetails() {ID="1003", Name="XYZZ", City ="City3", Country="UK"},
+                 new UserDetails() {ID="1004", Name="LMNO", City ="City4", Country="UK"},
+            };
             List<string> employee = new List<string>();
             employee.Add("moon");
-            EmployeeGridViewList.DataSource = employee;
+            EmployeeGridViewList.DataSource = persons;
             EmployeeGridViewList.DataBind();
         }
 
@@ -159,15 +173,15 @@ namespace WebBarcode
             borderedCellStyle.VerticalAlignment = VerticalAlignment.Center;
 
 
-            CreateCell(HeaderRow, 0, "Batch Name", borderedCellStyle);
-            CreateCell(HeaderRow, 1, "RuleID", borderedCellStyle);
-            CreateCell(HeaderRow, 2, "Rule Type", borderedCellStyle);
-            CreateCell(HeaderRow, 3, "Code Message Type", borderedCellStyle);
-            CreateCell(HeaderRow, 4, "Severity", borderedCellStyle);
+            CreateCell(HeaderRow, 0, "Chesis No.", borderedCellStyle);
+            CreateCell(HeaderRow, 1, "Color", borderedCellStyle);
+            CreateCell(HeaderRow, 2, "Type", borderedCellStyle);
+            CreateCell(HeaderRow, 3, "CC", borderedCellStyle);
+            CreateCell(HeaderRow, 4, "Other", borderedCellStyle);
 
             IRow BodyRow = sheet.CreateRow(1);
 
-            CreateCell(BodyRow, 0, "ch012345", borderedCellStyle);
+            CreateCell(BodyRow, 0, "ch06789", borderedCellStyle);
             CreateCell(BodyRow, 1, "Red", borderedCellStyle);
             CreateCell(BodyRow, 2, "Motor Cycle", borderedCellStyle);
             CreateCell(BodyRow, 3, "100cc", borderedCellStyle);
@@ -177,7 +191,7 @@ namespace WebBarcode
             IRow BodyRow2 = sheet.CreateRow(2);
 
             CreateCell(BodyRow2, 0, "ch012345", borderedCellStyle);
-            CreateCell(BodyRow2, 1, "Red", borderedCellStyle);
+            CreateCell(BodyRow2, 1, "Black", borderedCellStyle);
             CreateCell(BodyRow2, 2, "Motor Cycle", borderedCellStyle);
             CreateCell(BodyRow2, 3, "150cc", borderedCellStyle);
             //CreateCell(BodyRow, 4, "100000", borderedCellStyle);
